@@ -1,14 +1,15 @@
 import fetch from 'cross-fetch'
-import { useEffect } from 'react'
+
 import './index.css'
 import './App.css'
+import { usePolling } from './hooks/usePolling'
 
 const App = () => {
-
-  useEffect(() => {
+  usePolling(() => {
     fetch('http://localhost:3000/api/stats')
       .then((res) => res.json())
-  }, [])
+      .then(console.log)
+  }, 4000)
 
   return (
     <main className="App">
