@@ -13,10 +13,10 @@ import './index.css'
 import './App.css'
 import { Line } from 'react-chartjs-2'
 
-import type { CpuLoad } from './cpuLoad/types'
 import { usePolling } from './hooks/usePolling'
 import { useRingBuffer } from './hooks/useRingBuffer'
 import { BUFFER_SIZE, CPU_STATS_DELAY } from './utils/constants'
+import type { CpuLoad } from './utils/types'
 
 ChartJS.register(
   CategoryScale,
