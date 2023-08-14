@@ -16,7 +16,7 @@ import { Line } from 'react-chartjs-2'
 import type { CpuLoad } from './cpuLoad/types'
 import { usePolling } from './hooks/usePolling'
 import { useRingBuffer } from './hooks/useRingBuffer'
-import { BUFFER_SIZE, CPU_STATS_DELAY } from './utils/constants'
+import { DEFAULT_BUFFER_SIZE, DEFAULT_CPU_STATS_DELAY } from './utils/constants'
 
 ChartJS.register(
   CategoryScale,
@@ -29,12 +29,12 @@ ChartJS.register(
 )
 
 const App = () => {
-  const [buffer, push] = useRingBuffer<CpuLoad>(BUFFER_SIZE)
+  const [timeLine, push] = useRingBuffer<CpuLoad>(DEFAULT_BUFFER_SIZE)
   usePolling(() => {
     fetch('http://localhost:3000/api/stats')
       .then((res) => res.json())
       .then((cpuLoad: CpuLoad) => push(cpuLoad))
-  }, CPU_STATS_DELAY)
+  }, DEFAULT_CPU_STATS_DELAY)
 
   return (
     <main className="App">
@@ -44,7 +44,7 @@ const App = () => {
           options={{
             scales: {
               y: {
-                max: 1.01,
+                max: 1,
                 min: 0,
               },
             },
@@ -54,12 +54,12 @@ const App = () => {
               {
                 backgroundColor: 'rgba(53, 162, 235, 0.5)',
                 borderColor: 'rgb(53, 162, 235)',
-                data: buffer.map((cpuLoad) => cpuLoad.value),
+                data: timeLine.map((cpuLoad) => cpuLoad.value),
                 label: 'CPU avg. load',
               },
             ],
-            labels: buffer.map((cpuLoad) =>
-              new Date(cpuLoad.timestamp).toISOString(),
+            labels: timeLine.map((cpuLoad) =>
+              new Date(cpuLoad.timestamp).getUTCSeconds(),
             ),
           }}
         />
