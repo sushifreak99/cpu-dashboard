@@ -7,7 +7,8 @@ export const handlers = [
     const data: CpuLoad = {
       timestamp: new Date().getTime(),
       value:
-        0.8 * 0.01 * Math.random() +
+        0.8 +
+        0.01 * Math.random() +
         0.03 * Math.random() +
         0.01 * Math.random(),
     }
